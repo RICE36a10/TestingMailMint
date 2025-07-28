@@ -79,3 +79,19 @@ export const GetAllUserTemplate = query({
         return result;
     }
 })
+
+export const DeleteTemplate = mutation({
+    args: {
+        tid: v.string()
+    },
+    handler: async (ctx, args) => {
+        const result = await ctx.db.query('emailTemplates')
+            .filter(q => q.eq(q.field('tid'), args.tid))
+            .collect();
+
+        if (result.length > 0) {
+            const docId = result[0]._id;
+            await ctx.db.delete(docId);
+        }
+    }
+})
