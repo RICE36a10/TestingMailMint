@@ -2,13 +2,17 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button';
 import Link from 'next/link';
-import { useConvex } from 'convex/react';
+import { useConvex, useMutation } from 'convex/react';
+import { Trash, Loader2 } from 'lucide-react';
+import { toast } from 'sonner'
 import { useUserDetail } from '@/app/provider';
 import { api } from '@/convex/_generated/api';
 
 function EmailTemplateList() {
     const [emailList, setEmailList] = useState([]);
+    const [deletingId, setDeletingId] = useState(null);
     const convex = useConvex();
+    const deleteTemplate = useMutation(api.emailTemplate.DeleteTemplate);
     const { userDetail, setUserDetail } = useUserDetail();
 
     useEffect(() => {
@@ -41,7 +45,7 @@ function EmailTemplateList() {
                 :
                 <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-5'>
                     {emailList?.map((item, index) => (
-                        <div key={index} className='p-5 rounded-lg shadow-md border'>
+                        <div key={index} className='p-5 rounded-lg shadow-md border relative'>
                             <Image src={'/emailbox.png'} alt='email' width={200} height={200}
                                 className='w-full'
                             />
@@ -50,6 +54,29 @@ function EmailTemplateList() {
                             <Link href={'/editor/' + item.tid}>
                                 <Button className="mt-2 w-full">View/Edit</Button>
                             </Link>
+                            <Button
+                                variant="ghost"
+                                className="absolute top-2 right-2 p-1"
+                                disabled={deletingId === item.tid}
+                                onClick={async () => {
+                                    setDeletingId(item.tid)
+                                    try {
+                                        await deleteTemplate({ tid: item.tid });
+                                        toast('Template deleted successfully');
+                                        await GetTemplateList();
+                                    } catch (e) {
+                                        toast('Failed to delete template');
+                                    } finally {
+                                        setDeletingId(null);
+                                    }
+                                }}
+                            >
+                                {deletingId === item.tid ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                    <Trash className='h-4 w-4 text-red-500' />
+                                )}
+                            </Button>
 
                         </div>
                     ))}
