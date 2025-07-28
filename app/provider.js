@@ -7,6 +7,8 @@ import { ScreenSizeContext } from '@/context/ScreenSizeContext';
 import { DragDropLayoutElement } from '@/context/DragDropLayouElement';
 import { EmailTemplateContext } from '@/context/EmailTemplateContext';
 import { SelectedElementContext } from '@/context/SelectedElementContext';
+import { ThemeContext } from '@/context/ThemeContext';
+import ThemeWrapper from '@/components/custom/ThemeWrapper';
 function Provider({ children }) {
   const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL);
   const [userDetail, setUserDetail] = useState();
@@ -14,15 +16,21 @@ function Provider({ children }) {
   const [dragElementLayout, setDragElementLayout] = useState();
   const [emailTemplate, setEmailTemplate] = useState([]);
   const [selectedElement, setSelectedElement] = useState();
+  const [theme, setTheme] = useState('light');
 
 
   useEffect(() => {
     if (typeof window !== undefined) {
       const storage = JSON.parse(localStorage.getItem('userDetail'));
       const emailTemplateStorage = localStorage.getItem('emailTemplate');
+      const themeStorage = localStorage.getItem('theme');
 
       if (emailTemplateStorage) {
         setEmailTemplate(JSON.parse(emailTemplateStorage))
+      }
+
+      if (themeStorage) {
+        setTheme(themeStorage);
       }
 
 
@@ -42,6 +50,12 @@ function Provider({ children }) {
       localStorage.setItem('emailTemplate', JSON.stringify(emailTemplate))
     }
   }, [emailTemplate])
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      localStorage.setItem('theme', theme)
+    }
+  }, [theme])
 
   useEffect(() => {
     if (selectedElement) {
@@ -69,7 +83,11 @@ function Provider({ children }) {
             <DragDropLayoutElement.Provider value={{ dragElementLayout, setDragElementLayout }}>
               <EmailTemplateContext.Provider value={{ emailTemplate, setEmailTemplate }}>
                 <SelectedElementContext.Provider value={{ selectedElement, setSelectedElement }}>
-                  <div>{children}</div>
+                  <ThemeContext.Provider value={{ theme, setTheme }}>
+                    <ThemeWrapper>
+                      <div>{children}</div>
+                    </ThemeWrapper>
+                  </ThemeContext.Provider>
                 </SelectedElementContext.Provider>
               </EmailTemplateContext.Provider>
             </DragDropLayoutElement.Provider>
@@ -99,4 +117,8 @@ export const useEmailTemplate = () => {
 
 export const useSelectedElement = () => {
   return useContext(SelectedElementContext);
+}
+
+export const useTheme = () => {
+  return useContext(ThemeContext);
 }

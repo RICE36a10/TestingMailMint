@@ -2,19 +2,20 @@
 import Image from 'next/image'
 import React from 'react'
 import { Button } from '../ui/button'
-import { Code, CodeSquare, Monitor, Smartphone } from 'lucide-react'
+import { Code, Monitor, Smartphone } from 'lucide-react'
 import { useEmailTemplate, useScreenSize } from '@/app/provider'
 import Link from 'next/link'
 import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useParams } from 'next/navigation'
 import { toast } from 'sonner'
+import ThemeToggle from './ThemeToggle'
 
 function EditorHeader({ viewHTMLCode }) {
     const { screenSize, setScreenSize } = useScreenSize();
     const updateEmailTemplate = useMutation(api.emailTemplate.UpdateTemplateDesign);
     const { templateId } = useParams();
-    const { emailTemplate, setEmailTemplate } = useEmailTemplate();
+    const { emailTemplate } = useEmailTemplate();
     const onSaveTemplate = async () => {
         await updateEmailTemplate({
             tid: templateId,
@@ -47,6 +48,7 @@ function EditorHeader({ viewHTMLCode }) {
                 </Button>
                 <Button variant="outline">Send Test Email</Button>
                 <Button onClick={onSaveTemplate}>Save Template</Button>
+                <ThemeToggle />
 
             </div>
         </div>
