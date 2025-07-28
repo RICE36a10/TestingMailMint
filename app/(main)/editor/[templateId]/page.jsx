@@ -7,10 +7,11 @@ import Settings from '@/components/custom/Settings'
 import { api } from '@/convex/_generated/api'
 import { useConvex } from 'convex/react'
 import { useParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 function Editor() {
     const [viewHTMLCode, setViewHtmlCode] = useState();
+    const canvasRef = useRef();
     const { templateId } = useParams();
     const { userDetail, setUserDetail } = useUserDetail();
     const [loading, setLoading] = useState(false);
@@ -36,15 +37,20 @@ function Editor() {
 
 
     }
+    const getHtml = () => {
+        return canvasRef.current?.innerHTML || '';
+    };
+
     return (
         <div>
-            <EditorHeader viewHTMLCode={(v) => setViewHtmlCode(v)} />
+            <EditorHeader viewHTMLCode={(v) => setViewHtmlCode(v)} getHtml={getHtml} />
 
             {!loading ? <div className='grid grid-cols-5'>
                 <ElementsSideBar />
                 <div className='col-span-3 bg-gray-100'>
                     <Canvas viewHTMLCode={viewHTMLCode}
-                        closeDialog={() => setViewHtmlCode(false)} />
+                        closeDialog={() => setViewHtmlCode(false)}
+                        canvasRef={canvasRef} />
                 </div>
                 <Settings />
             </div> :
