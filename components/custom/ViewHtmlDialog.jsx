@@ -1,5 +1,6 @@
 
-import React from 'react'
+"use client"
+import React, { useMemo } from 'react'
 import {
     Dialog,
     DialogContent,
@@ -9,11 +10,27 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Copy } from 'lucide-react'
+import { toast } from 'sonner'
+import prettier from 'prettier/standalone'
+import parserHtml from 'prettier/plugins/html'
 
 function ViewHtmlDialog({ openDialog, htmlCode, closeDialog }) {
+    const formattedHtml = useMemo(() => {
+        try {
+            return prettier.format(htmlCode || '', {
+                parser: 'html',
+                plugins: [parserHtml]
+            })
+        } catch (e) {
+            console.error(e)
+            return htmlCode
+        }
+    }, [htmlCode])
 
-    const CopyCode = () => {
-        navigator.clipboard.writeText(htmlCode);
+    const CopyCode = async () => {
+        await navigator.clipboard.writeText(htmlCode)
+        toast('Code copied to clipboard')
+        closeDialog(false)
     }
 
     return (
@@ -32,7 +49,7 @@ function ViewHtmlDialog({ openDialog, htmlCode, closeDialog }) {
                         <div className='max-h-[400px] overflow-auto bg-black text-white rounded-lg p-5'>
                             <pre className='whitespace-pre-wrap break-all'>
                                 <code>
-                                    {htmlCode}
+                                    {formattedHtml}
                                 </code>
                             </pre>
 
