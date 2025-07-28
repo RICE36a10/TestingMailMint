@@ -45,18 +45,18 @@ function EmailTemplateList() {
                 :
                 <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-5'>
                     {emailList?.map((item, index) => (
-                        <div key={index} className='p-5 rounded-lg shadow-md border relative'>
+                        <div key={index} className='p-5 rounded-lg shadow-md border relative transition-all duration-100 ease-in-out hover:scale-105 '>
                             <Image src={'/emailbox.png'} alt='email' width={200} height={200}
                                 className='w-full'
                             />
 
-                            <h2 className='mt-2'>{item?.description}</h2>
+                            <h2 className='mt-2 h-[70pt] overflow-auto'>{item?.description}</h2>
                             <Link href={'/editor/' + item.tid}>
                                 <Button className="mt-2 w-full">View/Edit</Button>
                             </Link>
                             <Button
                                 variant="ghost"
-                                className="absolute top-2 right-2 p-1"
+                                className="absolute top-2 right-2 p-2 m-1 transition-all duration-100 ease-in-out hover:scale-150 hover:bg-gray-300 scale-150 "
                                 disabled={deletingId === item.tid}
                                 onClick={async () => {
                                     setDeletingId(item.tid)
@@ -74,7 +74,7 @@ function EmailTemplateList() {
                                 {deletingId === item.tid ? (
                                     <Loader2 className="h-4 w-4 animate-spin" />
                                 ) : (
-                                    <Trash className='h-4 w-4 text-red-500' />
+                                    <Trash className='h-8 w-8 text-red-500  transition-all duration-100 ease-in-out hover:scale-150   ' />
                                 )}
                             </Button>
 

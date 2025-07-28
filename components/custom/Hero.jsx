@@ -2,6 +2,7 @@ import React from 'react'
 import { Button } from '../ui/button'
 import Image from 'next/image'
 import SignInButton from './SignInButton'
+import Link from 'next/link';
 
 function Hero() {
     return (
@@ -9,7 +10,7 @@ function Hero() {
     flex flex-col items-center
     mt-24
     '>
-            <h2 className='font-extrabold 
+            <h2 className='font-extrabold
         text-5xl text-center
         '>AI-Powered
                 <span className='text-primary'> Email Templates
@@ -18,7 +19,9 @@ function Hero() {
             <p className='text-center mt-4'>Longing to impress clients with AI-powered emails but don’t have enough time to build them on your own? Use the AI-powered email templates that already have AI-generated imagery and copy — save time on email production with us.</p>
 
             <div className='flex gap-5 mt-6'>
-                <Button variant="outline">Try Demo</Button>
+                <Link href={'/dashboard/create'}>
+                    <Button variant="outline">Try Demo</Button>
+                </Link>
                 <SignInButton />
             </div>
 

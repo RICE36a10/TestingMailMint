@@ -62,9 +62,9 @@ export default function Create() {
                         <AIInputBox/>
                     </TabsContent>
                     <TabsContent value="Scratch">
-                        <div className={' ml-16 mt-10'}>
+                        <div className={'  ml-24  mt-20'}>
                             {scratchClicked ? (
-                                <Button onClick={handleStartNow} disabled={loading}>
+                                <Button className={"transform transition-transform duration-200 hover:scale-125"} onClick={handleStartNow} disabled={loading}>
                                     {loading ? (
                                         <span className={'scale-125 flex'}>
                                             <LoaderCircle className={'animate-spin'} />
