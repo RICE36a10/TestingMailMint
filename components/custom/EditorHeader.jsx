@@ -1,17 +1,20 @@
 "use client"
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from '../ui/button'
-import { Code, CodeSquare, Monitor, Smartphone } from 'lucide-react'
+import { Code, Monitor, Smartphone } from 'lucide-react'
 import { useEmailTemplate, useScreenSize } from '@/app/provider'
 import Link from 'next/link'
 import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useParams } from 'next/navigation'
 import { toast } from 'sonner'
+import SendEmailDialog from './SendEmailDialog'
 
-function EditorHeader({ viewHTMLCode }) {
+function EditorHeader({ viewHTMLCode, getHtml }) {
     const { screenSize, setScreenSize } = useScreenSize();
+    const [open, setOpen] = useState(false);
+    const [html, setHtml] = useState('');
     const updateEmailTemplate = useMutation(api.emailTemplate.UpdateTemplateDesign);
     const { templateId } = useParams();
     const { emailTemplate, setEmailTemplate } = useEmailTemplate();
@@ -45,10 +48,14 @@ function EditorHeader({ viewHTMLCode }) {
                 >
                     <Code />
                 </Button>
-                <Button variant="outline">Send Test Email</Button>
+                <Button variant="outline" onClick={() => {
+                    setHtml(getHtml());
+                    setOpen(true);
+                }}>Send Test Email</Button>
                 <Button onClick={onSaveTemplate}>Save Template</Button>
 
             </div>
+            <SendEmailDialog open={open} onOpenChange={setOpen} html={html} />
         </div>
     )
 }

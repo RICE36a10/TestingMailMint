@@ -4,8 +4,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import ColumnLayout from '../LayoutElements/ColumnLayout';
 import ViewHtmlDialog from './ViewHtmlDialog';
 
-function Canvas({ viewHTMLCode, closeDialog }) {
-    const htmlRef = useRef();
+function Canvas({ viewHTMLCode, closeDialog, canvasRef }) {
+    const htmlRef = canvasRef || useRef();
     const { screenSize, setScreenSize } = useScreenSize();
     const { dragElementLayout, setDragElementLayout } = useDragElementLayout();
     const { emailTemplate, setEmailTemplate } = useEmailTemplate();
