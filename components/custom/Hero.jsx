@@ -1,9 +1,12 @@
+"use client"
 import React from 'react'
 import { Button } from '../ui/button'
 import Image from 'next/image'
 import SignInButton from './SignInButton'
+import { useUserDetail } from '@/app/provider'
 
 function Hero() {
+    const { userDetail } = useUserDetail();
     return (
         <div className='px-10 md:px-28 lg:px-44 xl:px-56
     flex flex-col items-center
@@ -19,7 +22,7 @@ function Hero() {
 
             <div className='flex gap-5 mt-6'>
                 <Button variant="outline">Try Demo</Button>
-                <SignInButton />
+                {!userDetail?.email && <SignInButton />}
             </div>
 
             <Image src={'/landing.png'} alt='landing'
