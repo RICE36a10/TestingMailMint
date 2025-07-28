@@ -31,8 +31,9 @@ function Header() {
     p-4 shadow-sm px-10'>
       <Link href={'/'}>
         <Image src={'/logo.svg'} alt='logo'
-               width={180}
-               height={140}
+               width={50}
+               height={50}
+               className={'scale-125'}
         />
       </Link>
 

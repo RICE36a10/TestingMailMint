@@ -34,19 +34,19 @@ function ViewHtmlDialog({ openDialog, htmlCode, closeDialog }) {
     }
 
     return (
-        <Dialog open={openDialog} onOpenChange={closeDialog}>
-            <DialogContent>
-                <DialogHeader>
+        <Dialog  open={openDialog} onOpenChange={closeDialog} >
+            <DialogContent className={'bg-gray-300 '}>
+                <DialogHeader className={''}>
                     <DialogTitle asChild>
-                        <div className='flex items-center justify-between'>
-                            <h2>HTML Email Template</h2>
-                            <Copy className='p-2 bg-gray-100 rounded-full h-9 w-9 cursor-pointer'
+                        <div className='flex items-center justify-between '>
+                            <h2 className={'text-2xl'}>HTML Email Template</h2>
+                            <Copy className='p-2 rounded-md  h-12 w-12 m-4 cursor-pointer'
                                 onClick={CopyCode}
                             />
                         </div>
                     </DialogTitle>
                     <DialogDescription asChild>
-                        <div className='max-h-[400px] overflow-auto bg-black text-white rounded-lg p-5'>
+                        <div className='max-h-[600px] max-w-[600px] overflow-auto bg-gray-800 text-white  p-5 rounded-md'>
                             <pre className='whitespace-pre-wrap break-all'>
                                 <code>
                                     {formattedHtml}
