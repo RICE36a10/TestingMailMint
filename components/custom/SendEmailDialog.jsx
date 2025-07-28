@@ -17,25 +17,31 @@ function SendEmailDialog({ open, onOpenChange, html }) {
 
   const sendEmail = async () => {
     const to = emails.split(',').map(e => e.trim()).filter(Boolean)
-    try {
-      const wrappedHtml = /^\s*<!DOCTYPE/i.test(html)
-        ? html
-        : `<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>${subject || 'Email'}</title>\n</head>\n<body>${html}</body>\n</html>`
-
-      const res = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to, subject, html: wrappedHtml })
-      })
-      if (res.ok) {
-        toast('Email sent successfully')
-        onOpenChange(false)
-      } else {
-        toast('Failed to send email')
-      }
-    } catch (e) {
-      toast('Failed to send email')
+    if (to.length === 0) {
+      toast('Please provide at least one email')
+      return
     }
+    const wrappedHtml = /^\s*<!DOCTYPE/i.test(html)
+      ? html
+      : `<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>${subject || 'Email'}</title>\n</head>\n<body>${html}</body>\n</html>`
+
+    for (const email of to) {
+      try {
+        const res = await fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ to: [email], subject, html: wrappedHtml })
+        })
+        if (res.ok) {
+          toast(`Mail sent to ${email}`)
+        } else {
+          toast(`Failed to send mail to ${email}`)
+        }
+      } catch (e) {
+        toast(`Failed to send mail to ${email}`)
+      }
+    }
+    onOpenChange(false)
   }
 
   return (
