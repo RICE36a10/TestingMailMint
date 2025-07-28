@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { useConvex, useMutation } from 'convex/react';
-import { Trash } from 'lucide-react';
+import { Trash, Loader2 } from 'lucide-react';
+import { toast } from 'sonner'
 import { useUserDetail } from '@/app/provider';
 import { api } from '@/convex/_generated/api';
 
 function EmailTemplateList() {
     const [emailList, setEmailList] = useState([]);
+    const [deletingId, setDeletingId] = useState(null);
     const convex = useConvex();
     const deleteTemplate = useMutation(api.emailTemplate.DeleteTemplate);
     const { userDetail, setUserDetail } = useUserDetail();
@@ -55,12 +57,25 @@ function EmailTemplateList() {
                             <Button
                                 variant="ghost"
                                 className="absolute top-2 right-2 p-1"
+                                disabled={deletingId === item.tid}
                                 onClick={async () => {
-                                    await deleteTemplate({ tid: item.tid });
-                                    GetTemplateList();
+                                    setDeletingId(item.tid)
+                                    try {
+                                        await deleteTemplate({ tid: item.tid });
+                                        toast('Template deleted successfully');
+                                        await GetTemplateList();
+                                    } catch (e) {
+                                        toast('Failed to delete template');
+                                    } finally {
+                                        setDeletingId(null);
+                                    }
                                 }}
                             >
-                                <Trash className='h-4 w-4 text-red-500' />
+                                {deletingId === item.tid ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                    <Trash className='h-4 w-4 text-red-500' />
+                                )}
                             </Button>
 
                         </div>
