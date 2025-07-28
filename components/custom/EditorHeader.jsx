@@ -1,6 +1,6 @@
 "use client"
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '../ui/button'
 import { Code, Monitor, Smartphone } from 'lucide-react'
 import { useEmailTemplate, useScreenSize } from '@/app/provider'
@@ -27,6 +27,13 @@ function EditorHeader({ viewHTMLCode, getHtml }) {
         });
         toast('Email Template Saved Successfully!')
     }
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            onSaveTemplate();
+        }, 5000);
+        return () => clearInterval(interval);
+    }, [emailTemplate]);
 
     return (
         <div className='p-4 shadow-sm flex justify-between items-center'>
