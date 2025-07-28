@@ -2,13 +2,15 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 import { Button } from '../ui/button';
 import Link from 'next/link';
-import { useConvex } from 'convex/react';
+import { useConvex, useMutation } from 'convex/react';
+import { Trash } from 'lucide-react';
 import { useUserDetail } from '@/app/provider';
 import { api } from '@/convex/_generated/api';
 
 function EmailTemplateList() {
     const [emailList, setEmailList] = useState([]);
     const convex = useConvex();
+    const deleteTemplate = useMutation(api.emailTemplate.DeleteTemplate);
     const { userDetail, setUserDetail } = useUserDetail();
 
     useEffect(() => {
@@ -41,7 +43,7 @@ function EmailTemplateList() {
                 :
                 <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-5'>
                     {emailList?.map((item, index) => (
-                        <div key={index} className='p-5 rounded-lg shadow-md border'>
+                        <div key={index} className='p-5 rounded-lg shadow-md border relative'>
                             <Image src={'/emailbox.png'} alt='email' width={200} height={200}
                                 className='w-full'
                             />
@@ -50,6 +52,16 @@ function EmailTemplateList() {
                             <Link href={'/editor/' + item.tid}>
                                 <Button className="mt-2 w-full">View/Edit</Button>
                             </Link>
+                            <Button
+                                variant="ghost"
+                                className="absolute top-2 right-2 p-1"
+                                onClick={async () => {
+                                    await deleteTemplate({ tid: item.tid });
+                                    GetTemplateList();
+                                }}
+                            >
+                                <Trash className='h-4 w-4 text-red-500' />
+                            </Button>
 
                         </div>
                     ))}
