@@ -18,10 +18,14 @@ function SendEmailDialog({ open, onOpenChange, html }) {
   const sendEmail = async () => {
     const to = emails.split(',').map(e => e.trim()).filter(Boolean)
     try {
+      const wrappedHtml = /^\s*<!DOCTYPE/i.test(html)
+        ? html
+        : `<!DOCTYPE html>\n<html lang="en">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>${subject || 'Email'}</title>\n</head>\n<body>${html}</body>\n</html>`
+
       const res = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to, subject, html })
+        body: JSON.stringify({ to, subject, html: wrappedHtml })
       })
       if (res.ok) {
         toast('Email sent successfully')
