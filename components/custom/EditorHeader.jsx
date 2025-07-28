@@ -9,6 +9,8 @@ import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useParams } from 'next/navigation'
 import { toast } from 'sonner'
+
+import ThemeToggle from './ThemeToggle'
 import SendEmailDialog from './SendEmailDialog'
 
 function EditorHeader({ viewHTMLCode, getHtml }) {
@@ -17,7 +19,7 @@ function EditorHeader({ viewHTMLCode, getHtml }) {
     const [html, setHtml] = useState('');
     const updateEmailTemplate = useMutation(api.emailTemplate.UpdateTemplateDesign);
     const { templateId } = useParams();
-    const { emailTemplate, setEmailTemplate } = useEmailTemplate();
+    const { emailTemplate } = useEmailTemplate();
     const onSaveTemplate = async () => {
         await updateEmailTemplate({
             tid: templateId,
@@ -53,6 +55,7 @@ function EditorHeader({ viewHTMLCode, getHtml }) {
                     setOpen(true);
                 }}>Send Test Email</Button>
                 <Button onClick={onSaveTemplate}>Save Template</Button>
+                <ThemeToggle />
 
             </div>
             <SendEmailDialog open={open} onOpenChange={setOpen} html={html} />
