@@ -83,6 +83,7 @@ export default [
             padding: '10px',
             height: '30%',
             width: '30%',
+            borderRadius: '0px',
         },
         outerStyle: {
             display: 'flex',
@@ -104,6 +105,7 @@ export default [
             padding: '10px',
             height: '40%',
             width: '40%',
+            borderRadius: '0px',
         },
         outerStyle: {
             display: 'flex',
@@ -165,8 +167,6 @@ export default [
             gap: 15,
 
         }
-
-
 
     }
 

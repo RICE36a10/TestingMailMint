@@ -18,7 +18,6 @@ function Provider({ children }) {
   const [selectedElement, setSelectedElement] = useState();
   const [theme, setTheme] = useState('light');
 
-
   useEffect(() => {
     if (typeof window !== undefined) {
       const storage = JSON.parse(localStorage.getItem('userDetail'));
@@ -27,18 +26,11 @@ function Provider({ children }) {
 
       if (emailTemplateStorage) {
         setEmailTemplate(JSON.parse(emailTemplateStorage))
-      }
-
-      if (themeStorage) {
+      } if (themeStorage) {
         setTheme(themeStorage);
-      }
-
-
-      if (!storage?.email || !storage) {
+      } if (!storage?.email || !storage) {
         // Redirect to Home Screen
-      }
-      else {
-
+      } else {
         setUserDetail(storage)
       }
     }
@@ -69,11 +61,8 @@ function Provider({ children }) {
         }
       })
       setEmailTemplate(updatedEmailTemplates);
-
     }
   }, [selectedElement])
-
-
 
   return (
     <ConvexProvider client={convex}>
@@ -85,7 +74,9 @@ function Provider({ children }) {
                 <SelectedElementContext.Provider value={{ selectedElement, setSelectedElement }}>
                   <ThemeContext.Provider value={{ theme, setTheme }}>
                     <ThemeWrapper>
-                      <div>{children}</div>
+                      <div> {
+                        children
+                      } </div>
                     </ThemeWrapper>
                   </ThemeContext.Provider>
                 </SelectedElementContext.Provider>

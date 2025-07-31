@@ -76,6 +76,7 @@ function ColumnLayout({ layout }) {
             });
         }
     };
+
     const moveItemDown = (layoutId) => {
         const index = emailTemplate.findIndex((item) => item.id === layoutId);
         if (index > 0) {
@@ -106,7 +107,8 @@ function ColumnLayout({ layout }) {
                 }}
                 className={`${selectedElement?.layout?.id == layout?.id && 'border border-dashed border-blue-500'}`}
             >
-                {Array.from({ length: layout?.numOfCol }).map((_, index) => (
+                {
+                    Array.from({ length: layout?.numOfCol }).map((_, index) => (
                     <div key={index} className={`
                      flex items-center h-full w-full bg-white cursor-pointer
                      ${(index == dragOver?.index && dragOver?.columnId == layout.id) ? 'bg-green-200' : 'bg-gray-100'}
@@ -125,17 +127,17 @@ function ColumnLayout({ layout }) {
                 {selectedElement?.layout?.id == layout?.id &&
                     <div className='absolute -right-10 flex gap-2 flex-col'>
                         <div className=' cursor-pointer
-                     bg-purple-100 p-2 rounded-full hover:scale-105 
+                     bg-purple-100 p-2 rounded-full hover:scale-105
                      transition-all hover:shadow-md' onClick={() => deleteLayout(layout?.id)}>
                             <Trash className='h-4 w-4 text-red-500 ' />
                         </div>
                         <div className='cursor-pointer
-                    bg-gray-100 p-2 rounded-full hover:scale-105 
+                    bg-gray-100 p-2 rounded-full hover:scale-105
                     transition-all hover:shadow-md' onClick={() => moveItemUp(layout.id)}>
                             <ArrowUp className='h-4 w-4 ' />
                         </div>
                         <div className='cursor-pointer
-                    bg-gray-100 p-2 rounded-full hover:scale-105 
+                    bg-gray-100 p-2 rounded-full hover:scale-105
                     transition-all hover:shadow-md' onClick={() => moveItemDown(layout.id)}>
                             <ArrowDown className='h-4 w-4 ' />
                         </div>

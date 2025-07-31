@@ -25,7 +25,7 @@ function EditorHeader({ viewHTMLCode, getHtml }) {
             tid: templateId,
             design: emailTemplate
         });
-        toast('Email Template Saved Successfully!')
+        // toast('Email Template Saved Successfully!')
     }
 
     useEffect(() => {

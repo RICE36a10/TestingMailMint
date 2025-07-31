@@ -27,7 +27,7 @@ export default function Create() {
                 tid: tid,
                 design: [],
                 email: userDetail.email,
-                description: "Blank Template",
+                description: "Blank Template with Id :" + tid,
             });
             setEmailTemplate([]);
             router.push('/editor/' + tid);
